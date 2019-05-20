@@ -3,6 +3,7 @@ package com.sj.realtrippro;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+<<<<<<< HEAD
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
@@ -53,6 +54,16 @@ public class MainActivity extends AppCompatActivity {
                 Intent mainIt = new Intent(MainActivity.this, TripAddActivity.class);
                 startActivity(mainIt);
 
+=======
+
+public class MainActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_memo_detail);
+    }
+>>>>>>> 40f1356cf5263981a4ffe13580e99b96feee84e9
 }
         });
 

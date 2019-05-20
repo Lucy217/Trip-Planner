@@ -57,7 +57,7 @@ public class TripAddActivity extends AppCompatActivity {
 
     //선택한 국가 저장 변수
     String sNation;
-    
+
 
     //국가 이름을 저장할 배열 선언
     ArrayList<String> nations = new ArrayList<>();
