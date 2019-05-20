@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:text="메모"
             android:textSize="30sp"
-            android:id="@+id/memoTitle"
             android:layout_marginRight="210dp"/>
 
         <ImageButton
