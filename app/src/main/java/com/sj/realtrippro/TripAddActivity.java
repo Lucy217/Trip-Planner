@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -53,14 +55,28 @@ public class TripAddActivity extends AppCompatActivity {
     //그리드 뷰에서 선택한 끝 일자 정보 저장변수
     int eYear, eMonth, eDay;
 
-    //대화 상자용 view
-    View main_dlg;
+    //선택한 국가 저장 변수
+    String sNation;
+    
+
+    //국가 이름을 저장할 배열 선언
+    ArrayList<String> nations = new ArrayList<>();
+
+    //nations 리스트 뷰를 사용하기 위한 ArrayAdapter 선언
+    ArrayAdapter<String> sAdap;
+
+    //국가 배열 선언
+    String country[] = {
+            "대한민국","일본","대만","필리핀","중국","마카오","홍콩","베트남","라오스","말레이시아","괌","러시아","태국","인도네시아","캄보디아"
+            ,"미안마","싱가포르","스리랑카","네팔","방글라데시","호주","인도","몽골","몰디브","덴마크","프랑스","우주베키스탄","미국","독일","뉴질랜드"
+            ,"이탈리아","스웨덴","영국","네덜란드","터키","스위스","노르웨이","아일랜드","벨기에","스페인","우크라이나","기타"};
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_add);
+
 
         //AddActivity View 객체 선언
         btn_back = findViewById(R.id.btn_back);         btn_save = findViewById(R.id.btn_save);
@@ -74,15 +90,46 @@ public class TripAddActivity extends AppCompatActivity {
         gridCal.setAdapter(ca);
 
 
-        //ImageButton 처리하기
+        //back 버튼 처리하기
       btn_back.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-              Intent getIt = getIntent();
               finish();
           }
       });
 
+        //Spinner
+        //만들어둔 nation List 에 아이템 추가
+        for(int i = 0; i <country.length; i++){
+            nations.add(country[i]);
+        }
+        sAdap = new ArrayAdapter<>(this,android.R.layout.simple_spinner_dropdown_item,
+                nations);
+
+        spNation.setAdapter(sAdap);
+
+        spNation.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                if(nations.get(position).equals("기타")){
+                    addNation.setVisibility(View.VISIBLE);
+                }
+
+            sNation = nations.get(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+
+
+      //달력
       //gridView 에 날짜 데이터 생성
         //현재 날짜 데이터 처리
         Calendar cal = Calendar.getInstance(); // 현재 날짜 구하기
@@ -92,6 +139,9 @@ public class TripAddActivity extends AppCompatActivity {
 
         //달력 데이터 생성 메소드
         setCalData(nowYear,nowMonth,nowDay);
+
+        String calTitle = nowYear+"년 "+(nowMonth+1) + "월";
+        tvMonth.setText(calTitle);
 
         //btn_prev, btn_next 버튼처리
         btn_prev.setOnClickListener(new View.OnClickListener() {
@@ -105,11 +155,11 @@ public class TripAddActivity extends AppCompatActivity {
 
                 //1월일 경우 이전달을 누르면
                 //년도 -1 월 12월
-                if(cMonth < 0){
+                if(cMonth > 0){
                     cMonth--;
                 }
-                else if(cMonth ==0){
-                    cYear++;
+                else if(cMonth == 0){
+                    cYear--;
                     cMonth = 11;
                 }
 
@@ -123,7 +173,7 @@ public class TripAddActivity extends AppCompatActivity {
                     setCalData(cYear,cMonth,0);
                 }
                 //변경된 년월일 출력
-                String calTitle = cYear + "년 "+(cMonth +1) + "월";
+                String calTitle = cYear+ "년 "+(cMonth +1) + "월";
                 tvMonth.setText(calTitle);
                 ca.notifyDataSetChanged();
 
@@ -159,12 +209,16 @@ public class TripAddActivity extends AppCompatActivity {
                 }
 
                 //변경된 년, 월, 일 출력
-                String calTitle = cYear + " 년 " + (cMonth+1) + " 월 ";
+                String calTitle = cYear + "년 " + (cMonth+1) + "월 ";
                 tvMonth.setText(calTitle);
                 ca.notifyDataSetChanged();
 
             }
         });
+
+
+
+
 
 
 
@@ -279,10 +333,9 @@ public class TripAddActivity extends AppCompatActivity {
         } //getView END
     } //CalAdapter END
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        ca.notifyDataSetChanged();
-//
-//    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ca.notifyDataSetChanged();
+    }
 } //AddTripActivity END
