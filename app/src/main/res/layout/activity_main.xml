@@ -41,7 +41,8 @@
             android:layout_height="50dp"
             android:scaleType="fitXY"
             android:src="@drawable/btn_add"
-            android:background="#f9f9f9"/>
+            android:background="#f9f9f9"
+            android:id="@+id/btn_add"/>
 
 
     </LinearLayout>
